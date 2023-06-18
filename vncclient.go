@@ -11,9 +11,10 @@ import (
 	"net"
 	"reflect"
 
+	"context"
+
 	"github.com/alexsnet/go-vnc/go/metrics"
 	"github.com/alexsnet/go-vnc/messages"
-	"golang.org/x/net/context"
 )
 
 type ReadProxy struct {

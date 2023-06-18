@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 func newMockServer(t *testing.T, version string) string {
@@ -18,16 +18,19 @@ func newMockServer(t *testing.T, version string) string {
 	}
 
 	go func() {
+
 		defer ln.Close()
 		c, err := ln.Accept()
 		if err != nil {
-			t.Fatalf("error accepting conn: %s", err)
+			// t.Fatalf("error accepting conn: %s", err)
+			panic(err)
 		}
 		defer c.Close()
 
 		_, err = c.Write([]byte(fmt.Sprintf("RFB %s\n", version)))
 		if err != nil {
-			t.Fatal("failed writing version")
+			// t.Fatal("failed writing version")
+			panic(err)
 		}
 	}()
 

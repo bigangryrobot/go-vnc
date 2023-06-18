@@ -8,13 +8,14 @@ import (
 	"testing"
 	"time"
 
+	"context"
+
 	"github.com/alexsnet/go-vnc/buttons"
 	"github.com/alexsnet/go-vnc/encodings"
 	"github.com/alexsnet/go-vnc/go/operators"
 	"github.com/alexsnet/go-vnc/keys"
 	"github.com/alexsnet/go-vnc/messages"
 	"github.com/alexsnet/go-vnc/rfbflags"
-	"golang.org/x/net/context"
 )
 
 func TestSetPixelFormat(t *testing.T) {

@@ -5,7 +5,7 @@ package vnc
 import (
 	"fmt"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 const pvLen = 12 // ProtocolVersion message length.
