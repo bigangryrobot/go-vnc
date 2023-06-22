@@ -3,6 +3,7 @@
 package vnc
 
 import (
+	"encoding/binary"
 	"io"
 
 	"github.com/alexsnet/go-vnc/rfbflags"
@@ -17,7 +18,20 @@ func (c *ClientConn) clientInit() error {
 
 	// TODO(kward)20170226): VENUE responds with some sort of shared flag
 	// response, which includes the VENUE name and IPs. Handle this?
-
+	{
+		dat, err := c.bufr.Peek(4)
+		if err != nil {
+			return err
+		}
+		x := binary.BigEndian.Uint32(dat)
+		// c.receive(&x)
+		if x != 0 {
+			return nil
+		}
+		if _, err := c.bufr.Discard(4); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

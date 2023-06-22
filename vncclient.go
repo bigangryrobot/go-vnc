@@ -3,6 +3,7 @@
 package vnc
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -126,6 +127,7 @@ func NewClientConfig(p string) *ClientConfig {
 // The ClientConn type holds client connection information.
 type ClientConn struct {
 	Conn            net.Conn
+	bufr            *bufio.Reader
 	config          *ClientConfig
 	protocolVersion string
 
@@ -167,6 +169,7 @@ type ClientConn struct {
 func NewClientConn(c net.Conn, cfg *ClientConfig) *ClientConn {
 	return &ClientConn{
 		Conn:           c,
+		bufr:           bufio.NewReaderSize(c, 1024),
 		connTerminated: false,
 		config:         cfg,
 		log:            cfg.Logger,
@@ -281,7 +284,7 @@ func (c *ClientConn) ListenAndHandle() error {
 
 // receive a packet from the network.
 func (c *ClientConn) receive(data interface{}) error {
-	if err := binary.Read(c.Conn, binary.BigEndian, data); err != nil {
+	if err := binary.Read(c.bufr, binary.BigEndian, data); err != nil {
 		return err
 	}
 	c.metrics["bytes-received"].Adjust(int64(binary.Size(data)))
@@ -294,32 +297,32 @@ func (c *ClientConn) receiveN(data interface{}, n int) error {
 		return nil
 	}
 
-	switch data.(type) {
+	switch data := data.(type) {
 	case *[]uint8:
 		var v uint8
 		for i := 0; i < n; i++ {
-			if err := binary.Read(c.Conn, binary.BigEndian, &v); err != nil {
+			if err := binary.Read(c.bufr, binary.BigEndian, &v); err != nil {
 				return err
 			}
-			slice := data.(*[]uint8)
+			slice := data
 			*slice = append(*slice, v)
 		}
 	case *[]int32:
 		var v int32
 		for i := 0; i < n; i++ {
-			if err := binary.Read(c.Conn, binary.BigEndian, &v); err != nil {
+			if err := binary.Read(c.bufr, binary.BigEndian, &v); err != nil {
 				return err
 			}
-			slice := data.(*[]int32)
+			slice := data
 			*slice = append(*slice, v)
 		}
 	case *bytes.Buffer:
 		var v byte
 		for i := 0; i < n; i++ {
-			if err := binary.Read(c.Conn, binary.BigEndian, &v); err != nil {
+			if err := binary.Read(c.bufr, binary.BigEndian, &v); err != nil {
 				return err
 			}
-			buf := data.(*bytes.Buffer)
+			buf := data
 			buf.WriteByte(v)
 		}
 	default:
