@@ -5,14 +5,13 @@ package vnc
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/binary"
 	"fmt"
 	"io"
 	"log"
 	"net"
 	"reflect"
-
-	"context"
 
 	"github.com/alexsnet/go-vnc/go/metrics"
 	"github.com/alexsnet/go-vnc/messages"
@@ -143,6 +142,10 @@ type ClientConn struct {
 
 	// Name associated with the desktop, sent from the server.
 	desktopName string
+
+	// zlibs is a slice of zlib readers for Tight encoding.
+	// Each stream can be reset independently.
+	zlibs [4]io.ReadCloser
 
 	// Encodings supported by the client. This should not be modified
 	// directly. Instead, SetEncodings() should be used.
