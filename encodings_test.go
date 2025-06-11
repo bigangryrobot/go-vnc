@@ -5,8 +5,8 @@ package vnc
 import (
 	"testing"
 
-	"github.com/alexsnet/go-vnc/encodings"
-	"github.com/alexsnet/go-vnc/go/operators"
+	"github.com/bigangryrobot/go-vnc/encodings"
+	"github.com/bigangryrobot/go-vnc/go/operators"
 )
 
 func TestEncoding_Marshal(t *testing.T) {

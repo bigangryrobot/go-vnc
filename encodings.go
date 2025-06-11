@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/alexsnet/go-vnc/encodings"
+	"github.com/bigangryrobot/go-vnc/encodings"
 )
 
 //=============================================================================

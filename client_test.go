@@ -10,12 +10,12 @@ import (
 
 	"context"
 
-	"github.com/alexsnet/go-vnc/buttons"
-	"github.com/alexsnet/go-vnc/encodings"
-	"github.com/alexsnet/go-vnc/go/operators"
-	"github.com/alexsnet/go-vnc/keys"
-	"github.com/alexsnet/go-vnc/messages"
-	"github.com/alexsnet/go-vnc/rfbflags"
+	"github.com/bigangryrobot/go-vnc/buttons"
+	"github.com/bigangryrobot/go-vnc/encodings"
+	"github.com/bigangryrobot/go-vnc/go/operators"
+	"github.com/bigangryrobot/go-vnc/keys"
+	"github.com/bigangryrobot/go-vnc/messages"
+	"github.com/bigangryrobot/go-vnc/rfbflags"
 )
 
 func TestSetPixelFormat(t *testing.T) {

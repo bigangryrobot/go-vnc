@@ -13,8 +13,8 @@ import (
 	"net"
 	"reflect"
 
-	"github.com/alexsnet/go-vnc/go/metrics"
-	"github.com/alexsnet/go-vnc/messages"
+	"github.com/bigangryrobot/go-vnc/go/metrics"
+	"github.com/bigangryrobot/go-vnc/messages"
 )
 
 type ReadProxy struct {
