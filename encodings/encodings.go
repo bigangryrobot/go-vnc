@@ -30,4 +30,24 @@ const (
 	DesktopNamePseudo         Encoding = -307
 	FencePseudo               Encoding = -312
 	ContinuousUpdatesPseudo   Encoding = -313
+
+	// These aliases are provided for convenience and to match common usage
+	// in other VNC libraries
+	RawEncoding                       = Raw
+	CopyRectEncoding                  = CopyRect
+	RREEncoding                       = RRE
+	CoRREEncoding                     = CoRRE
+	HextileEncoding                   = Hextile
+	ZlibEncoding                      = Zlib
+	TightEncoding                     = Tight
+	ZlibHexEncoding                   = ZlibHex
+	TRLEEncoding                      = TRLE
+	ZRLEEncoding                      = ZRLE
+	HitachiEncoding                   = Hitachi
+	CursorPseudoEncoding              = CursorPseudo
+	DesktopSizePseudoEncoding         = DesktopSizePseudo
+	ExtendedDesktopSizePseudoEncoding = ExtendedDesktopSizePseudo
+	DesktopNamePseudoEncoding         = DesktopNamePseudo
+	FencePseudoEncoding               = FencePseudo
+	ContinuousUpdatesPseudoEncoding   = ContinuousUpdatesPseudo
 )
