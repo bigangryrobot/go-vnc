@@ -75,15 +75,15 @@ func (c *ClientConn) serverInit() error {
 		return Errorf("failure reading ServerInit message; %v", err)
 	}
 
-	c.setFramebufferWidth(msg.FBWidth)
-	c.setFramebufferHeight(msg.FBHeight)
+	c.SetFramebufferWidth(msg.FBWidth)
+	c.SetFramebufferHeight(msg.FBHeight)
 	c.pixelFormat = msg.PixelFormat
 
 	name := make([]uint8, msg.NameLength)
 	if err := c.receive(&name); err != nil {
 		return err
 	}
-	c.setDesktopName(string(name))
+	c.SetDesktopName(string(name))
 
 	return nil
 }

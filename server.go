@@ -55,7 +55,7 @@ func (m *FramebufferUpdate) Type() messages.ServerMessage { return messages.Fram
 func (m *FramebufferUpdate) Read(c *ClientConn) (ServerMessage, error) {
 	// Build the map of supported encodings.
 	// encs := make(map[int32]Encoding)
-	// for _, e := range c.Encodings() {
+	// for _, e := range c.GetEncodings() {
 	// 	encs[e.Type()] = e
 	// }
 	// encs[Raw] = &RawEncoding{} // Raw encoding support required.

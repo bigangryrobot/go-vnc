@@ -96,7 +96,7 @@ type ClientConfig struct {
 	// sent on. If the channel blocks, then the goroutine reading data
 	// from the VNC server may block indefinitely. It is up to the user
 	// of the library to ensure that this channel is properly read.
-	// If this is not set, then all messages will be discarded.
+	// If this is not Set, then all messages will be discarded.
 	ServerMessageCh chan ServerMessage
 
 	// A slice of supported messages that can be read from the server.
@@ -170,12 +170,17 @@ type ClientConn struct {
 }
 
 func NewClientConn(c net.Conn, cfg *ClientConfig) *ClientConn {
+	// Use a default logger if none is provided.
+	logger := cfg.Logger
+	if logger == nil {
+		logger = log.New(io.Discard, "", log.LstdFlags)
+	}
 	return &ClientConn{
 		Conn:           c,
 		bufr:           bufio.NewReaderSize(c, 1024),
 		connTerminated: false,
 		config:         cfg,
-		log:            cfg.Logger,
+		log:            logger,
 		encodings:      Encodings{&RawEncoding{}},
 		pixelFormat:    PixelFormat32bit,
 		metrics: map[string]metrics.Metric{
@@ -187,56 +192,22 @@ func NewClientConn(c net.Conn, cfg *ClientConfig) *ClientConn {
 
 // Close a connection to a VNC server.
 func (c *ClientConn) Close() error {
-	if c.log != nil {
-		c.log.Println("VNC Client connection closed.")
+	if c.connTerminated {
+		return nil
 	}
+	c.log.Println("VNC Client connection closed.")
 	c.connTerminated = true
 	return c.Conn.Close()
 }
 
-// DesktopName returns the server provided desktop name.
-func (c *ClientConn) DesktopName() string {
-	return c.desktopName
-}
-
-// setDesktopName stores the server provided desktop name.
-func (c *ClientConn) setDesktopName(name string) {
-	if c.log != nil {
-		c.log.Printf("desktopName: %s\n", name)
-	}
-	c.desktopName = name
-}
-
-// Encodings returns the server provided encodings.
-func (c *ClientConn) Encodings() Encodings {
-	return c.encodings
-}
-
-// FramebufferHeight returns the server provided framebuffer height.
-func (c *ClientConn) FramebufferHeight() uint16 {
-	return c.fbHeight
-}
-
-// setFramebufferHeight stores the server provided framebuffer height.
-func (c *ClientConn) setFramebufferHeight(height uint16) {
-	if c.log != nil {
-		c.log.Printf("height: %d", height)
-	}
-	c.fbHeight = height
-}
-
-// FramebufferWidth returns the server provided framebuffer width.
-func (c *ClientConn) FramebufferWidth() uint16 {
-	return c.fbWidth
-}
-
-// setFramebufferWidth stores the server provided framebuffer width.
-func (c *ClientConn) setFramebufferWidth(width uint16) {
-	if c.log != nil {
-		c.log.Printf("width: %d", width)
-	}
-	c.fbWidth = width
-}
+func (c *ClientConn) GetDesktopName() string             { return c.desktopName }
+func (c *ClientConn) SetDesktopName(name string)         { c.desktopName = name }
+func (c *ClientConn) GetEncodings() Encodings            { return c.encodings }
+func (c *ClientConn) GetFramebufferHeight() uint16       { return c.fbHeight }
+func (c *ClientConn) SetFramebufferHeight(height uint16) { c.fbHeight = height }
+func (c *ClientConn) GetFramebufferWidth() uint16        { return c.fbWidth }
+func (c *ClientConn) SetFramebufferWidth(width uint16)   { c.fbWidth = width }
+func (c *ClientConn) GetPixelFormat() PixelFormat        { return c.pixelFormat }
 
 // ListenAndHandle listens to a VNC server and handles server messages.
 func (c *ClientConn) ListenAndHandle() error {
@@ -249,6 +220,10 @@ func (c *ClientConn) ListenAndHandle() error {
 	}
 
 	for {
+		if c.connTerminated {
+			break
+		}
+
 		var messageType messages.ServerMessage
 		if err := c.receive(&messageType); err != nil {
 			if !c.connTerminated {
@@ -335,13 +310,21 @@ func (c *ClientConn) receiveN(data interface{}, n int) error {
 	return nil
 }
 
-// send a packet to the network.
 func (c *ClientConn) send(data interface{}) error {
+	var size int
+	if s, ok := data.([]byte); ok {
+		size = len(s)
+	} else {
+		size = binary.Size(data)
+	}
+
 	if err := binary.Write(c.Conn, binary.BigEndian, data); err != nil {
 		return err
 	}
 
-	c.metrics["bytes-sent"].Adjust(int64(binary.Size(data)))
+	if size > 0 {
+		c.metrics["bytes-sent"].Adjust(int64(size))
+	}
 	return nil
 }
 

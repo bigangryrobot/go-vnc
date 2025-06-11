@@ -123,8 +123,8 @@ func TestServerInit(t *testing.T) {
 		if !equalPixelFormat(conn.pixelFormat, tt.pixelFormat) {
 			t.Errorf("PixelFormat: got = %v, want = %v", conn.pixelFormat, tt.pixelFormat)
 		}
-		if conn.DesktopName() != tt.desktopName {
-			t.Errorf("DesktopName: got = %v, want = %v", conn.DesktopName(), tt.desktopName)
+		if conn.GetDesktopName() != tt.desktopName {
+			t.Errorf("GetDesktopName: got = %v, want = %v", conn.GetDesktopName(), tt.desktopName)
 		}
 	}
 }
