@@ -15,7 +15,7 @@ with something more appropriate for your setup.
 	  "net"
 	  "time"
 
-	  "github.com/alexsnet/go-vnc"
+	  "github.com/bigangryrobot/go-vnc"
 	  "github.com/bigangryrobot/go-vnc/messages"
 	  "github.com/bigangryrobot/go-vnc/rfbflags"
 	)

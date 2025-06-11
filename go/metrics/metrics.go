@@ -10,11 +10,11 @@ import (
 	"net/http"
 )
 
-// TODO(alexsnet): Add the following stats:
+// TODO(bigangryrobot): Add the following stats:
 // - MultiLevel
 //   - MinuteHour
 // - VariableMap
-// TODO(alexsnet): Consider locking.
+// TODO(bigangryrobot): Consider locking.
 
 type Metric interface {
 	// Adjust increments or decrements the metric value.
