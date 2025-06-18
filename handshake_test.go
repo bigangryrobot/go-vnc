@@ -132,12 +132,12 @@ func TestSecurityHandshake33(t *testing.T) {
 	}{
 		//-- Supported security types. --
 		// Server supports None.
-		{uint32(secTypeNone), true, "", 4, 0},
+		{uint32(SecTypeNone), true, "", 4, 0},
 		// Server supports VNCAuth.
-		{uint32(secTypeVNCAuth), true, "", 20, 16},
+		{uint32(SecTypeVNCAuth), true, "", 20, 16},
 		//-- Unsupported security types. --
 		{
-			secType: uint32(secTypeInvalid),
+			secType: uint32(SecTypeInvalid),
 			reason:  "some reason"},
 		{secType: 255},
 	}
@@ -161,7 +161,7 @@ func TestSecurityHandshake33(t *testing.T) {
 				t.Fatalf("error sending reason-string: %v", err)
 			}
 		}
-		if tt.secType == uint32(secTypeVNCAuth) {
+		if tt.secType == uint32(SecTypeVNCAuth) {
 			if err := writeVNCAuthChallenge(conn.Conn); err != nil {
 				t.Fatalf("error sending VNCAuth challenge: %v", err)
 			}
@@ -193,7 +193,7 @@ func TestSecurityHandshake33(t *testing.T) {
 		}
 
 		// Validate client response.
-		if tt.secType == uint32(secTypeVNCAuth) {
+		if tt.secType == uint32(SecTypeVNCAuth) {
 			if err := readVNCAuthResponse(conn.Conn); err != nil {
 				t.Fatalf("%v: error reading VNCAuth response: %v", i, err)
 			}
@@ -218,32 +218,32 @@ func TestSecurityHandshake38(t *testing.T) {
 	}{
 		//-- Supported security types --
 		// Server and client support None.
-		{[]uint8{secTypeNone}, []ClientAuth{&ClientAuthNone{}}, secTypeNone, true, "", 2, 1},
+		{[]uint8{SecTypeNone}, []ClientAuth{&ClientAuthNone{}}, SecTypeNone, true, "", 2, 1},
 		// Server and client support VNCAuth.
-		{[]uint8{secTypeVNCAuth}, []ClientAuth{&ClientAuthVNC{"."}}, secTypeVNCAuth, true, "", 18, 17},
+		{[]uint8{SecTypeVNCAuth}, []ClientAuth{&ClientAuthVNC{"."}}, SecTypeVNCAuth, true, "", 18, 17},
 		// Server and client both support VNCAuth and None.
-		{[]uint8{secTypeVNCAuth, secTypeNone}, []ClientAuth{&ClientAuthVNC{"."}, &ClientAuthNone{}}, secTypeVNCAuth, true, "", 19, 17},
+		{[]uint8{SecTypeVNCAuth, SecTypeNone}, []ClientAuth{&ClientAuthVNC{"."}, &ClientAuthNone{}}, SecTypeVNCAuth, true, "", 19, 17},
 		// Server supports unknown #255, VNCAuth and None.
-		{[]uint8{255, secTypeVNCAuth, secTypeNone}, []ClientAuth{&ClientAuthVNC{"."}, &ClientAuthNone{}}, secTypeVNCAuth, true, "", 20, 17},
+		{[]uint8{255, SecTypeVNCAuth, SecTypeNone}, []ClientAuth{&ClientAuthVNC{"."}, &ClientAuthNone{}}, SecTypeVNCAuth, true, "", 20, 17},
 		{ // No security types provided.
 			secTypes: []uint8{},
 			client:   []ClientAuth{},
-			secType:  secTypeInvalid,
+			secType:  SecTypeInvalid,
 			reason:   "no security types"},
 		//-- Unsupported security types --
 		{ // Server provided no valid security types.
-			secTypes: []uint8{secTypeInvalid},
+			secTypes: []uint8{SecTypeInvalid},
 			client:   []ClientAuth{},
-			secType:  secTypeInvalid,
+			secType:  SecTypeInvalid,
 			reason:   "invalid security type"},
 		{ // Client and server don't support same security types.
-			secTypes: []uint8{secTypeVNCAuth},
+			secTypes: []uint8{SecTypeVNCAuth},
 			client:   []ClientAuth{&ClientAuthNone{}},
-			secType:  secTypeInvalid},
+			secType:  SecTypeInvalid},
 		{ // Server supports only unknown #255.
 			secTypes: []uint8{255},
 			client:   []ClientAuth{&ClientAuthNone{}},
-			secType:  secTypeInvalid},
+			secType:  SecTypeInvalid},
 	}
 
 	mockConn := &MockConn{}
@@ -268,7 +268,7 @@ func TestSecurityHandshake38(t *testing.T) {
 				t.Fatal(err)
 			}
 		}
-		if tt.secType == secTypeVNCAuth {
+		if tt.secType == SecTypeVNCAuth {
 			if err := writeVNCAuthChallenge(conn.Conn); err != nil {
 				t.Fatalf("error sending VNCAuth challenge: %s", err)
 			}
@@ -309,7 +309,7 @@ func TestSecurityHandshake38(t *testing.T) {
 		if got, want := conn.config.secType, secType; got != want {
 			t.Errorf("%d: secType not stored; got = %v, want = %v", i, got, want)
 		}
-		if tt.secType == secTypeVNCAuth {
+		if tt.secType == SecTypeVNCAuth {
 			if err := readVNCAuthResponse(conn.Conn); err != nil {
 				t.Fatalf("%d: error reading VNCAuth response: %s", i, err)
 			}

@@ -8,7 +8,7 @@ import (
 type ClientAuthVeNCryptAuth struct{}
 
 func (auth *ClientAuthVeNCryptAuth) SecurityType() uint8 {
-	return secTypeVeNCrypt
+	return SecTypeVeNCrypt
 }
 
 func (auth *ClientAuthVeNCryptAuth) Handshake(c *ClientConn) error {

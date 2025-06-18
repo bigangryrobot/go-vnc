@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	secTypeInvalid  = uint8(0)
-	secTypeNone     = uint8(1)
-	secTypeVNCAuth  = uint8(2)
-	secTypeVeNCrypt = uint8(19)
+	SecTypeInvalid  = uint8(0)
+	SecTypeNone     = uint8(1)
+	SecTypeVNCAuth  = uint8(2)
+	SecTypeVeNCrypt = uint8(19)
 )
 
 // ClientAuth implements a method of authenticating with a remote server.
@@ -28,7 +28,7 @@ type ClientAuth interface {
 type ClientAuthNone struct{}
 
 func (*ClientAuthNone) SecurityType() uint8 {
-	return secTypeNone
+	return SecTypeNone
 }
 
 func (*ClientAuthNone) Handshake(conn *ClientConn) error {
@@ -43,7 +43,7 @@ type ClientAuthVNC struct {
 type vncAuthChallenge [16]byte
 
 func (*ClientAuthVNC) SecurityType() uint8 {
-	return secTypeVNCAuth
+	return SecTypeVNCAuth
 }
 
 func (auth *ClientAuthVNC) Handshake(conn *ClientConn) error {

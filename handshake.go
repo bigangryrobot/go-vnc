@@ -112,17 +112,17 @@ func (c *ClientConn) securityHandshake33() error {
 
 	var auth ClientAuth
 	switch uint8(secType) { // 3.3 uses uint32, but 3.8 uses uint8. Unify on 3.8.
-	case secTypeInvalid: // Connection failed.
+	case SecTypeInvalid: // Connection failed.
 		reason, err := c.readErrorReason()
 		if err != nil {
 			return err
 		}
 		return NewVNCError(fmt.Sprintf("Security handshake failed; connection failed: %s", reason))
-	case secTypeNone:
+	case SecTypeNone:
 		auth = &ClientAuthNone{}
-	case secTypeVNCAuth:
+	case SecTypeVNCAuth:
 		auth = &ClientAuthVNC{c.config.Password}
-	case secTypeVeNCrypt:
+	case SecTypeVeNCrypt:
 		auth = &ClientAuthVeNCryptAuth{}
 	default:
 		return NewVNCError(fmt.Sprintf("Security handshake failed; invalid security type: %v", secType))
@@ -187,7 +187,7 @@ FindAuth:
 // securityResultHandshake implements §7.1.3 SecurityResult Handshake.
 func (c *ClientConn) securityResultHandshake() error {
 
-	if c.config.secType == secTypeNone {
+	if c.config.secType == SecTypeNone {
 		return nil
 	}
 
