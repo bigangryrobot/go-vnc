@@ -115,11 +115,11 @@ func (m *FramebufferUpdate) Unmarshal(_ []byte) error {
 }
 
 // EncodableFunc describes the function for encoding a Rectangle.
-type EncodableFunc func(enc encodings.Encoding) (Encoding, bool)
+type EncodableFunc func(enc encodings.EncodingType) (Encoding, bool)
 
 // Encodable returns the Encoding that can be used to encode a Rectangle, or
 // false if the encoding isn't recognized.
-func (c *ClientConn) Encodable(enc encodings.Encoding) (Encoding, bool) {
+func (c *ClientConn) Encodable(enc encodings.EncodingType) (Encoding, bool) {
 	for _, e := range c.encodings {
 		if e.Type() == enc {
 			return e, true
@@ -130,9 +130,9 @@ func (c *ClientConn) Encodable(enc encodings.Encoding) (Encoding, bool) {
 
 // rectangleMessage holds a Rectangle wire format message.
 type rectangleMessage struct {
-	X, Y uint16             // x-, y-position
-	W, H uint16             // width, height
-	E    encodings.Encoding // encoding-type
+	X, Y uint16                 // x-, y-position
+	W, H uint16                 // width, height
+	E    encodings.EncodingType // encoding-type
 }
 
 // Rectangle represents a rectangle of pixel data.
@@ -207,7 +207,7 @@ func (r *Rectangle) Unmarshal(data []byte) error {
 	r.X, r.Y, r.Width, r.Height = msg.X, msg.Y, msg.W, msg.H
 
 	switch msg.E {
-	case encodings.Raw:
+	case encodings.EncRaw:
 		r.Enc = &RawEncoding{}
 	default:
 		return fmt.Errorf("unable to unmarshal encoding %v", msg.E)

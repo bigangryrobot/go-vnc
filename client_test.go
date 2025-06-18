@@ -82,9 +82,9 @@ func TestSetPixelFormat(t *testing.T) {
 func TestSetEncodings(t *testing.T) {
 	tests := []struct {
 		encs     Encodings
-		encTypes []encodings.Encoding
+		encTypes []encodings.EncodingType
 	}{
-		{Encodings{&RawEncoding{}}, []encodings.Encoding{0}},
+		{Encodings{&RawEncoding{}}, []encodings.EncodingType{0}},
 	}
 
 	mockConn := &MockConn{}
@@ -125,7 +125,7 @@ func TestSetEncodings(t *testing.T) {
 			continue
 		}
 		for i := 0; i < len(tt.encs); i++ {
-			if got, want := encodings.Encoding(encs[i]), tt.encs[i].Type(); got != want {
+			if got, want := encodings.EncodingType(encs[i]), tt.encs[i].Type(); got != want {
 				t.Errorf("incorrect encoding-type [%v]; got = %v, want = %v", i, got, want)
 			}
 		}

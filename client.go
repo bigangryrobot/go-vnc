@@ -62,7 +62,7 @@ func (c *ClientConn) SetEncodings(encs Encodings) error {
 	// Make sure RawEncoding is supported.
 	haveRaw := false
 	for _, v := range encs {
-		if v.Type() == encodings.Raw {
+		if v.Type() == encodings.EncRaw {
 			haveRaw = true
 			break
 		}

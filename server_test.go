@@ -49,7 +49,7 @@ func TestRectangle_Unmarshal(t *testing.T) {
 		t.Errorf("empty encoding")
 		return
 	}
-	if got, want := rect.Enc.Type(), encodings.Raw; got != want {
+	if got, want := rect.Enc.Type(), encodings.EncRaw; got != want {
 		t.Errorf("incorrect encoding-type; got = %v, want = %v", got, want)
 	}
 }

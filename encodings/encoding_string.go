@@ -8,23 +8,22 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[Raw-0]
-	_ = x[CopyRect-1]
-	_ = x[RRE-2]
-	_ = x[CoRRE-4]
-	_ = x[Hextile-5]
-	_ = x[Zlib-6]
-	_ = x[Tight-7]
-	_ = x[ZlibHex-8]
-	_ = x[TRLE-15]
-	_ = x[ZRLE-16]
-	_ = x[Hitachi-17]
-	_ = x[CursorPseudo-(-239)]
-	_ = x[DesktopSizePseudo-(-223)]
-	_ = x[ExtendedDesktopSizePseudo-(-308)]
-	_ = x[DesktopNamePseudo-(-307)]
-	_ = x[FencePseudo-(-312)]
-	_ = x[ContinuousUpdatesPseudo-(-313)]
+	_ = x[EncRaw-0]
+	_ = x[EncCopyRect-1]
+	_ = x[EncRRE-2]
+	_ = x[EncCoRRE-4]
+	_ = x[EncHextile-5]
+	_ = x[EncZlib-6]
+	_ = x[EncTight-7]
+	_ = x[EncZlibHex-8]
+	_ = x[EncTRLE-15]
+	_ = x[EncZRLE-16]
+	_ = x[EncCursorPseudo-(-239)]
+	_ = x[EncDesktopSizePseudo-(-223)]
+	_ = x[EncExtendedDesktopSizePseudo-(-308)]
+	_ = x[EncDesktopNamePseudo-(-307)]
+	_ = x[EncFencePseudo-(-312)]
+	_ = x[EncContinuousUpdatesPseudo-(-313)]
 }
 
 const (
@@ -48,7 +47,7 @@ var (
 )
 
 // String returns the string representation of the Encoding.
-func (i Encoding) String() string {
+func (i EncodingType) String() string {
 	switch {
 	case -313 <= i && i <= -312:
 		i -= -313

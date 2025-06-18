@@ -22,7 +22,7 @@ func TestEncoding_Marshal(t *testing.T) {
 
 func TestRawEncoding_Type(t *testing.T) {
 	e := &RawEncoding{}
-	if got, want := e.Type(), encodings.Raw; got != want {
+	if got, want := e.Type(), encodings.EncRaw; got != want {
 		t.Errorf("incorrect encoding; got = %s, want = %s", got, want)
 	}
 }
@@ -62,7 +62,7 @@ func TestRawEncoding_Read(t *testing.T) {}
 
 func TestDesktopSizePseudoEncoding_Type(t *testing.T) {
 	e := &DesktopSizePseudoEncoding{}
-	if got, want := e.Type(), encodings.DesktopSizePseudo; got != want {
+	if got, want := e.Type(), encodings.DesktopSizePseudoEncoding; got != want {
 		t.Errorf("incorrect encoding; got = %s, want = %s", got, want)
 	}
 }

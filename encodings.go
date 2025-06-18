@@ -30,7 +30,7 @@ type Encoding interface {
 	Read(*ClientConn, *Rectangle) (Encoding, error)
 
 	// The number that uniquely identifies this encoding type.
-	Type() encodings.Encoding
+	Type() encodings.EncodingType
 }
 
 // Encodings describes a slice of Encoding.
@@ -110,7 +110,7 @@ func (*RawEncoding) Read(c *ClientConn, rect *Rectangle) (Encoding, error) {
 func (*RawEncoding) String() string { return "RawEncoding" }
 
 // Type implements the Encoding interface.
-func (*RawEncoding) Type() encodings.Encoding { return encodings.Raw }
+func (*RawEncoding) Type() encodings.EncodingType { return encodings.EncRaw }
 
 // -----------------------------------------------------------------------------
 // CopyRect Encoding
@@ -145,8 +145,8 @@ func (e *CopyRectEncoding) String() string {
 }
 
 // Type implements the Encoding interface.
-func (*CopyRectEncoding) Type() encodings.Encoding {
-	return encodings.CopyRect
+func (*CopyRectEncoding) Type() encodings.EncodingType {
+	return encodings.EncCopyRect
 }
 
 // Marshal implements the Marshaler interface.
@@ -239,8 +239,8 @@ func (e *RREEncoding) String() string {
 }
 
 // Type implements the Encoding interface.
-func (*RREEncoding) Type() encodings.Encoding {
-	return encodings.RRE
+func (*RREEncoding) Type() encodings.EncodingType {
+	return encodings.EncRRE
 }
 
 // Marshal implements the Marshaler interface.
@@ -283,7 +283,7 @@ type HextileEncoding struct {
 // Verify that interfaces are honored.
 var _ Encoding = (*HextileEncoding)(nil)
 
-func (*HextileEncoding) Type() encodings.Encoding { return encodings.Hextile }
+func (*HextileEncoding) Type() encodings.EncodingType { return encodings.EncHextile }
 func (e *HextileEncoding) String() string {
 	return fmt.Sprintf("HextileEncoding(%d colors)", len(e.Colors))
 }
@@ -477,8 +477,8 @@ func (e *ZRLEEncoding) String() string {
 }
 
 // Type implements the Encoding interface.
-func (*ZRLEEncoding) Type() encodings.Encoding {
-	return encodings.ZRLE
+func (*ZRLEEncoding) Type() encodings.EncodingType {
+	return encodings.EncZRLE
 }
 
 // Marshal implements the Marshaler interface.
@@ -514,8 +514,8 @@ type TightEncoding struct {
 // Verify that interfaces are honored.
 var _ Encoding = (*TightEncoding)(nil)
 
-func (*TightEncoding) Type() encodings.Encoding { return encodings.Tight }
-func (*TightEncoding) String() string           { return "TightEncoding" }
+func (*TightEncoding) Type() encodings.EncodingType { return encodings.EncTight }
+func (*TightEncoding) String() string               { return "TightEncoding" }
 func (*TightEncoding) Marshal() ([]byte, error) {
 	return nil, errors.New("client-side marshalling of TightEncoding not supported: this is a server-to-client encoding")
 }
@@ -808,8 +808,8 @@ func (e *CursorPseudoEncoding) String() string {
 }
 
 // Type implements the Encoding interface.
-func (*CursorPseudoEncoding) Type() encodings.Encoding {
-	return encodings.CursorPseudo
+func (*CursorPseudoEncoding) Type() encodings.EncodingType {
+	return encodings.EncCursorPseudo
 }
 
 // Marshal implements the Marshaler interface.
@@ -857,4 +857,6 @@ func (*DesktopSizePseudoEncoding) Read(c *ClientConn, rect *Rectangle) (Encoding
 func (*DesktopSizePseudoEncoding) String() string { return "DesktopSizePseudoEncoding" }
 
 // Type implements the Encoding interface.
-func (*DesktopSizePseudoEncoding) Type() encodings.Encoding { return encodings.DesktopSizePseudo }
+func (*DesktopSizePseudoEncoding) Type() encodings.EncodingType {
+	return encodings.EncDesktopSizePseudo
+}
